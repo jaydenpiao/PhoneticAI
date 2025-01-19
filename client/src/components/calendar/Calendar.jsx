@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { RightOutlined, LeftOutlined } from "@ant-design/icons";
+import { Button } from "antd";
 
 const Calendar = ({ renderTags, tagTypeStates }) => {
   const daysOfWeek = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
@@ -30,15 +32,27 @@ const Calendar = ({ renderTags, tagTypeStates }) => {
   };
 
   return (
-    <div className="min-h-screen">
-      <div className="h-screen max-w-full">
-        <div className="flex justify-center items-center space-x-2 mb-2">
-          <button onClick={() => setMonth(currentMonth - 1)}>{"<"}</button>
+    <div className=" bg-white p-4 rounded-lg pb-16">
+      <div className="max-w-full">
+        <div className="flex justify-center items-center space-x-2 mb-2 font-semibold text-lg">
+          <Button
+            type="primary"
+            size="default"
+            className="bg-white text-blue-700"
+            icon={<LeftOutlined />}
+            onClick={() => setMonth(currentMonth - 1)}
+          ></Button>
           <h2>{`${new Date(currentYear, currentMonth).toLocaleString(
             "default",
             { month: "long" }
           )} ${currentYear}`}</h2>
-          <button onClick={() => setMonth(currentMonth + 1)}>{">"}</button>
+          <Button
+            type="primary"
+            size="default"
+            className="bg-white text-blue-700"
+            icon={<RightOutlined />}
+            onClick={() => setMonth(currentMonth + 1)}
+          ></Button>
         </div>
         <div className="grid grid-cols-7 gap-0">
           {daysOfWeek.map((day, index) => (
