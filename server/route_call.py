@@ -50,7 +50,7 @@ Agent: Have a great day!
 
 **Transcript Example 2:**
 Agent: Yo what up G! It's Lebron. What you want?
-User: Yo what up Lebron! I need to do an assignment with Jayden tomorrow at 4pm.
+User: Yo what up Lebron! I need to do a Demo with Jayden tomorrow at 4pm.
 Agent: You got it. Tomorrow at 4PM?
 User: Yes
 
@@ -72,11 +72,11 @@ Your task is to:
 ### Expected Output Format:
 {
   "sentiment": "POSITIVE",
-  "summary": "Morgan scheduled an assignment with Jayden for tomorrow at 4pm.",
+  "summary": "Morgan scheduled an Demo with Jayden for tomorrow at 4pm.",
   "event": 
     {
-        "name": "Assignment with Morgan",
-        "type": "Assignment",
+        "name": "Demo with Morgan",
+        "type": "Demo",
         "start_time": "2025-01-20 16:00:00",
         "end_time": "2025-01-20 17:00:00"
     }
