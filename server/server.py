@@ -32,7 +32,11 @@ async def get_all_agents():
 
 @app.get("/contacts")
 async def get_all_contacts():
-    cursor.execute("select * from contacts")
+    cursor.execute("""
+        SELECT contacts.name AS contact_name, contacts.phone_number as phone_number, agents.name AS agent_name
+        FROM contacts
+        JOIN agents ON contacts.agent_id = agents.id
+    """)
     connection.commit()
     return cursor.fetchall()
 
