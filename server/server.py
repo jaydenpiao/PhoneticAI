@@ -5,13 +5,6 @@ import pymysql
 import os
 
 # add connection from discord 
-connection = pymysql.connect(
-    host="REMOVED",
-    user="REMOVED",
-    password="REMOVED",
-    database="nwhacks",
-    cursorclass=pymysql.cursors.DictCursor
-)
 
 cursor = connection.cursor()
 
