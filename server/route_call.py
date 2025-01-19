@@ -108,10 +108,10 @@ async def get_openai_response(transcript):
 
 # add connection from discord
 connection = pymysql.connect(
-    host="REMOVED",
-    user="REMOVED",
-    password="REMOVED",
-    database="nwhacks",
+    host=os.getenv("MY_SQL_SERVER"),
+    user=os.getenv("MY_SQL_USER"),
+    password=os.getenv("MY_SQL_PASS"),
+    database=os.getenv("MY_SQL_DB"),
     cursorclass=pymysql.cursors.DictCursor
 ) 
 
