@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Popover } from "antd";
 import Calendar from "./Calendar";
+import axios from "axios";
 
 const EventsView = () => {
   const [events, setEvents] = useState([]);
@@ -17,35 +18,26 @@ const EventsView = () => {
   };
 
   useEffect(() => {
-    // Simulate fetching events data
     const fetchEvents = async () => {
-      // Replace with actual API call if needed
-      const mockData = [
-        {
-          id: 1,
-          name: "Team Meeting",
-          type: STATUS_TYPES.MEETING,
-          start_time: "2025-01-01T10:00:00",
-          end_time: "2025-01-01T11:00:00",
-          description: "Discuss project updates.",
-          referenceNo: "REF001",
-          numTasks: 3,
-          siteType: "Remote",
-        },
-        {
-          id: 2,
-          name: "Customer Follow-Up",
-          type: STATUS_TYPES.FOLLOW_UP,
-          start_time: "2025-01-02T14:00:00",
-          end_time: "2025-01-02T15:00:00",
-          description: "Follow up with the client.",
-          referenceNo: "REF002",
-          numTasks: 1,
-          siteType: "On-Site",
-        },
-      ];
-      setEvents(mockData);
+      try {
+        const response = await axios.get("http://127.0.0.1:8000/events");
+        // Assuming the API returns events in the format you've shared
+        const formattedEvents = response.data.map((event) => ({
+          id: event.id,
+          name: event.name,
+          type: event.type,
+          start_time: event.start_time,
+          end_time: event.end_time,
+          description: `Event Type: ${event.type}`,
+          siteType: "Remote", // Example placeholder, update as needed
+          numTasks: 1, // Example placeholder, update as needed
+        }));
+        setEvents(formattedEvents);
+      } catch (error) {
+        console.error("Error fetching events:", error);
+      }
     };
+
     fetchEvents();
   }, [search]);
 
@@ -65,6 +57,21 @@ const EventsView = () => {
         state: true,
         text: STATUS_TYPES.TASK,
         colour: "#238636",
+      },
+      {
+        state: true,
+        text: STATUS_TYPES.DEMO,
+        colour: "#673ab7",
+      },
+      {
+        state: true,
+        text: STATUS_TYPES.DEADLINE,
+        colour: "#f44336",
+      },
+      {
+        state: true,
+        text: STATUS_TYPES.SUPPORT,
+        colour: "#009688",
       },
     ]);
   }, []);
