@@ -1,38 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 const Agents = () => {
-  const agents = [
-    {
-      name: "AI Sales Agent",
-      description:
-        "Specialized in handling sales calls, offering product recommendations, and converting leads into customers effortlessly.",
-    },
-    {
-      name: "Customer Support Agent",
-      description:
-        "Handles customer queries, resolves issues, and ensures customer satisfaction with a friendly and reliable approach.",
-    },
-    {
-      name: "Appointment Scheduler",
-      description:
-        "Automates scheduling tasks, manages calendars, and sends reminders to ensure seamless organization.",
-    },
-    {
-      name: "Enterprise CRM Agent",
-      description:
-        "Seamlessly integrates with your CRM to manage customer interactions, update records, and streamline workflows.",
-    },
-    {
-      name: "Survey and Feedback Agent",
-      description:
-        "Conducts post-call surveys, collects feedback, and generates actionable insights to improve services.",
-    },
-    {
-      name: "Virtual Receptionist",
-      description:
-        "Answers incoming calls, provides information, and routes calls to the appropriate department with efficiency.",
-    },
-  ];
+  const [agents, setAgents] = useState([]);
+  console.log(agents);
+
+  useEffect(() => {
+    const fetchAgents = async () => {
+      try {
+        const response = await axios.get("http://127.0.0.1:8000/agents");
+        setAgents(response.data); // Axios automatically parses JSON
+      } catch (error) {
+        console.error("Error fetching agents:", error);
+      }
+    };
+
+    fetchAgents();
+  }, []);
 
   return (
     <section className="bg-white">
@@ -47,9 +31,9 @@ const Agents = () => {
           </p>
         </div>
         <div className="space-y-8 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-12 md:space-y-0">
-          {agents.map((agent, idx) => (
+          {agents.map((agent) => (
             <div
-              key={idx}
+              key={agent.id}
               className="p-6 rounded-lg shadow-md bg-white hover:shadow-lg transition-shadow duration-200"
             >
               <div className="flex justify-center items-center mb-4 w-12 h-12 rounded-full bg-blue-100">
@@ -62,10 +46,13 @@ const Agents = () => {
                   <path d="M10 2a8 8 0 100 16 8 8 0 000-16zM8 12a1 1 0 110 2 1 1 0 010-2zm0-8a1 1 0 110 2 1 1 0 010-2zm4 8a1 1 0 110 2 1 1 0 010-2zm0-8a1 1 0 110 2 1 1 0 010-2z"></path>
                 </svg>
               </div>
-              <h3 className="mb-2 text-xl font-bold">
-                {agent.name}
-              </h3>
-              <p className="text-gray-400">{agent.description}</p>
+              <h3 className="mb-2 text-xl font-bold">{agent.name}</h3>
+              <p className="text-gray-400">{agent.prompt}</p>
+              {agent.phone_number && (
+                <p className="text-sm text-gray-500 mt-2">
+                  Phone: {agent.phone_number}
+                </p>
+              )}
             </div>
           ))}
         </div>
