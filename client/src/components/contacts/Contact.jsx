@@ -1,6 +1,5 @@
 import React from "react";
 import { Card, Avatar } from "antd";
-import { UserOutlined } from "@ant-design/icons";
 
 const Contact = ({ contact, sourceColumnId, onDragStart }) => {
   return (

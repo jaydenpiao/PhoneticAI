@@ -12,6 +12,7 @@ import EventsView from "./components/calendar/EventsView";
 import Contacts from "./components/contacts/Contacts";
 import Dashboard from "./components/Dashboard";
 import Landing from "./components/Landing";
+import ContactDetails from "./components/ContactDetails";
 
 const App = () => {
   const [current, setCurrent] = useState("mail");
@@ -59,6 +60,7 @@ const App = () => {
         <Route path="/agents" element={<Agents />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/calendar" element={<EventsView />} />
+        <Route path="/contacts/:id" element={<ContactDetails />} />
       </Routes>
     </Router>
   );

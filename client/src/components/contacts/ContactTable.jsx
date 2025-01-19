@@ -1,11 +1,12 @@
 import React from "react";
 import { Table, Tag } from "antd";
+import { Link } from "react-router-dom";
 
 const ContactTable = () => {
-  // Mock data for contacts
   const dataSource = [
     {
       key: "1",
+      id: "1",
       name: "John Doe",
       phone_number: "123-456-7890",
       agent_id: 1,
@@ -13,6 +14,7 @@ const ContactTable = () => {
     },
     {
       key: "2",
+      id: "2",
       name: "Jane Smith",
       phone_number: "987-654-3210",
       agent_id: 2,
@@ -20,6 +22,7 @@ const ContactTable = () => {
     },
     {
       key: "3",
+      id: "3",
       name: "Alice Johnson",
       phone_number: "555-123-4567",
       agent_id: null,
@@ -33,6 +36,14 @@ const ContactTable = () => {
       title: "Name",
       dataIndex: "name",
       key: "name",
+      render: (text, record) => (
+        <Link
+          to={`/contacts/${record.id}`}
+          className="text-blue-600 hover:text-blue-800"
+        >
+          {text}
+        </Link>
+      ),
     },
     {
       title: "Phone Number",
