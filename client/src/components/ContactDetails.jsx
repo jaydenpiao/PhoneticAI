@@ -58,7 +58,7 @@ const CallList = ({ calls, downloadTranscript }) => {
                 </Title>
                 <Text className="text-xs text-gray-500 pt-1">
                   {new Date(call.timestamp).toLocaleString()} for{" "}
-                  {(call.length / 1000).toFixed(2)} seconds
+                  {call.length} seconds
                 </Text>
                 <Space align="center" className="mb-1">
                   {getSentimentIcon(call.sentiment)}
@@ -156,10 +156,8 @@ const ContactDetails = () => {
                 <Card bordered={false}>
                   <Statistic
                     title="Total Call Time (s)"
-                    value={(
-                      calls.reduce((total, call) => total + call.length, 0) /
-                      1000
-                    ).toFixed(2)}
+                    value={
+                      calls.reduce((total, call) => total + call.length, 0)}
                     prefix={<FieldTimeOutlined />}
                   />
                 </Card>

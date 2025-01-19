@@ -32,7 +32,7 @@ const Dashboard = () => {
     datasets: [
       {
         label: "Call Length by Time (in seconds)",
-        data: statistics.call_length_by_time.map((item) => item[1] / 1000),
+        data: statistics.call_length_by_time.map((item) => item[1]),
         backgroundColor: "rgba(38, 128, 235, 0.1)",
         borderColor: "rgba(38, 128, 235, 1)", // Darker blue
         borderWidth: 2,
@@ -54,7 +54,7 @@ const Dashboard = () => {
                   <Col span={6}>
                     <Statistic
                       title="Average Call (s)"
-                      value={(statistics.call_stats.avg_length / 1000).toFixed(2)}
+                      value={statistics.call_stats.avg_length.toFixed(2)}
                       valueStyle={{ color: "#3f8600" }}
                       prefix={<ArrowUpOutlined />}
                     />
@@ -62,7 +62,7 @@ const Dashboard = () => {
                   <Col span={6}>
                     <Statistic
                       title="Total Call Seconds"
-                      value={(statistics.call_stats.total_length / 1000).toFixed(2)}
+                      value={statistics.call_stats.total_length.toFixed(2)}
                       valueStyle={{ color: "#3f8600" }}
                       prefix={<ArrowUpOutlined />}
                     />
@@ -70,7 +70,7 @@ const Dashboard = () => {
                   <Col span={6}>
                     <Statistic
                       title="Longest Call (s)"
-                      value={(statistics.call_stats.max_length / 1000).toFixed(2)}
+                      value={statistics.call_stats.max_length.toFixed(2)}
                       valueStyle={{ color: "#cf1322" }}
                       prefix={<ArrowDownOutlined />}
                     />
@@ -78,7 +78,7 @@ const Dashboard = () => {
                   <Col span={6}>
                     <Statistic
                       title="Shortest Call (s)"
-                      value={(statistics.call_stats.min_length / 1000).toFixed(2)}
+                      value={statistics.call_stats.min_length.toFixed(2)}
                       valueStyle={{ color: "#3f8600" }}
                       prefix={<ArrowUpOutlined />}
                     />
