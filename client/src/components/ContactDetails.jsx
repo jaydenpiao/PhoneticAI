@@ -55,13 +55,12 @@ const ContactDetails = () => {
         <div className="flex-1 min-h-screen p-4 border-r-[1px] border-gray-200">
           <h1 className="text-xl font-semibold text-gray-900 mb-4">Details</h1>
           <div className="p-4 border rounded-md shadow-sm">
-          <div className="p-4 border rounded-md shadow-sm">
           <Row gutter={16}>
             <Col span={12}>
               <Card bordered={false}>
                 <Statistic
                   title="Total"
-                  value={calls.reduce((total, call) => total + call.length, 0)}
+                  value={(calls.reduce((total, call) => total + call.length, 0) / 1000).toFixed(2)}
                   prefix={<FieldTimeOutlined />}
                 />
               </Card>
@@ -111,7 +110,6 @@ const ContactDetails = () => {
             </Col>
           </Row>
         </div>
-          </div>
           <h1 className="text-xl font-semibold text-gray-900 mt-6">Events</h1>
           <div className="w-full flex flex-col justify-start items-start space-y-2 border border-base rounded-md p-4">
             <Timeline
@@ -160,7 +158,7 @@ const ContactDetails = () => {
                       {call.sentiment}
                     </span>
                   </p>
-                  <p className="text-sm text-gray-500">Length: {call.length} seconds</p>
+                  <p className="text-sm text-gray-500">Length: {(call.length / 1000).toFixed(2)} seconds</p>
                   <p className="text-sm text-gray-500">Summary: {call.summary}</p>
                   <p className="text-sm text-gray-400">
                     Timestamp: {new Date(call.timestamp).toLocaleString()}
