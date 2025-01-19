@@ -6,6 +6,8 @@ const { Text } = Typography;
 
 const textModels = [
   "gpt-4o",
+  "gpt-o1-mini",
+  "gpt-3.5-hybrid",
   "anthropic-4b",
   "llama-72b-turbo",
   "whisper-1",

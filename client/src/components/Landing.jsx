@@ -2,6 +2,7 @@ import React from "react";
 import { FaPhoneAlt, FaBuilding, FaRobot, FaArrowRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import IPhone from "../iphone.jpg";
+import Logo from "../logo.png";
 
 const Landing = () => {
   const features = [

@@ -7,6 +7,7 @@ import {
 } from "@ant-design/icons";
 import { Menu } from "antd";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import Logo from "./logo.png";
 
 import Agents from "./components/Agents";
 import EventsView from "./components/calendar/EventsView";
@@ -25,6 +26,9 @@ const App = () => {
 
   // Updated items with React Router Links
   const items = [
+    {
+      label: <img src={Logo} height={50} width={50} />,
+    },
     {
       label: <Link to="/">Home</Link>,
       key: "landing",
