@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Table, Tag } from "antd";
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 const ContactTable = () => {
@@ -31,6 +32,14 @@ const ContactTable = () => {
       title: "Contact Name",
       dataIndex: "contact_name",
       key: "contact_name",
+      render: (text, record) => (
+        <Link
+          to={`/contacts/${record.id}`}
+          className="text-blue-600 hover:text-blue-800"
+        >
+          {text}
+        </Link>
+      ),
     },
     {
       title: "Phone Number",
