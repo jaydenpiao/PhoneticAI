@@ -4,22 +4,25 @@ from pydantic import BaseModel
 import pymysql
 import os
 from retell import Retell
+from dotenv import load_dotenv
+
+load_dotenv()
 
 from route_call import router as calls
 
 # add connection from discord
 connection = pymysql.connect(
-    host="REMOVED",
-    user="REMOVED",
-    password="REMOVED",
-    database="nwhacks",
+    host=os.getenv("MY_SQL_SERVER"),
+    user=os.getenv("MY_SQL_USER"),
+    password=os.getenv("MY_SQL_PASS"),
+    database=os.getenv("MY_SQL_DB"),
     cursorclass=pymysql.cursors.DictCursor
 )  
 
 cursor = connection.cursor()
 
 client = Retell(
-    api_key="REMOVED",
+    api_key=os.getenv('RETELL_API_KEY'),
 )
 
 app = FastAPI()

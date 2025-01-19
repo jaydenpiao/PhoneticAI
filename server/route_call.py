@@ -7,16 +7,18 @@ from openai import OpenAI
 from pydantic import BaseModel
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
-import json
 from fastapi import APIRouter
 from typing import Optional
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 router = APIRouter()
 
 
 client = OpenAI(
-    # openai api key from discord
-    api_key=""
+    api_key=os.getenv("OPENAI_API_KEY")
 )
 
 # Define the Pydantic model for the expected response
