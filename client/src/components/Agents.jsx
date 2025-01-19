@@ -37,7 +37,7 @@ const Agents = () => {
   }, []);
 
   return (
-    <section className="bg-blue-50">
+    <section className="bg-blue-50 min-h-screen">
       <div className="px-4 py-8 mx-auto max-w-screen-xl">
         <div className="max-w-screen-md mb-4">
           <h1 className="text-2xl font-bold mb-4">Meet our AI Agents</h1>
@@ -79,7 +79,7 @@ const Agents = () => {
                 </Text>
               </div>
               <h3 className="mb-2 text-xl font-bold">{agent.name}</h3>
-              <p className="text-gray-400">{agent.prompt}</p>
+              <p className="text-gray-400">{agent.details}</p>
             </div>
           ))}
         </div>

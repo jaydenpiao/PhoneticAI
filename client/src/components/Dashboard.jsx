@@ -54,7 +54,7 @@ const Dashboard = () => {
                   <Col span={6}>
                     <Statistic
                       title="Average Call (s)"
-                      value={statistics.call_stats.avg_length.toFixed(2)}
+                      value={statistics.call_stats.avg_length}
                       valueStyle={{ color: "#3f8600" }}
                       prefix={<ArrowUpOutlined />}
                     />
@@ -62,7 +62,7 @@ const Dashboard = () => {
                   <Col span={6}>
                     <Statistic
                       title="Total Call Seconds"
-                      value={statistics.call_stats.total_length.toFixed(2)}
+                      value={statistics.call_stats.total_length}
                       valueStyle={{ color: "#3f8600" }}
                       prefix={<ArrowUpOutlined />}
                     />
@@ -70,7 +70,7 @@ const Dashboard = () => {
                   <Col span={6}>
                     <Statistic
                       title="Longest Call (s)"
-                      value={statistics.call_stats.max_length.toFixed(2)}
+                      value={statistics.call_stats.max_length}
                       valueStyle={{ color: "#cf1322" }}
                       prefix={<ArrowDownOutlined />}
                     />
@@ -78,7 +78,7 @@ const Dashboard = () => {
                   <Col span={6}>
                     <Statistic
                       title="Shortest Call (s)"
-                      value={statistics.call_stats.min_length.toFixed(2)}
+                      value={statistics.call_stats.min_lengt}
                       valueStyle={{ color: "#3f8600" }}
                       prefix={<ArrowUpOutlined />}
                     />
