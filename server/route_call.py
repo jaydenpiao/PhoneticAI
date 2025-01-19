@@ -4,10 +4,29 @@ from fastapi import FastAPI, HTTPException, Form, Request
 import pymysql
 from fastapi.responses import Response
 from openai import OpenAI
+from pydantic import BaseModel
+from fastapi.encoders import jsonable_encoder
+from fastapi.responses import JSONResponse
+import json
 
-oai_client = OpenAI()
+client = OpenAI(
+    # openai api key from discord
+    api_key=""
+)
 
+# Define the Pydantic model for the expected response
+class Event(BaseModel):
+    name: str  # Name of the event
+    type: str  # Type of the event (e.g., Meeting, Task, etc.)
+    start_time: str | None  # Start time in ISO 8601 format or None
+    end_time: str | None  # End time in ISO 8601 format or None
 
+class EventSummary(BaseModel):
+    sentiment: str  # Overall sentiment of the user's interaction
+    summary: str  # Summary of the transcript
+    event: Event | None  # Event details or None if no event exists
+
+# Prompt to extract event details and sentiment
 oai_prompt = """
 You are analyzing a transcript between an agent and a user. The transcript is in the following format:
 
@@ -25,11 +44,14 @@ Your task is to:
    - NEGATIVE
    - NEUTRAL
 
-2. **Identify Event**: Extract the event such as meetings, tasks, follow-ups, demos, deadlines, or support requests. For meetings, extract the names of participants (e.g., "Jayden" or "Joe"), the type (e.g., 'Meeting', 'Task', etc.), and the datetime range (start_time and end_time). Ensure the datetime is formatted as `YYYY-MM-DD HH:MM:SS`.
+2. **Summarize the Transcript**: Provide a concise summary of the conversation, focusing on the key actions and context.
+
+3. **Identify Event**: Extract the event such as meetings, tasks, follow-ups, demos, deadlines, or support requests. For meetings, extract the names of participants (e.g., "Jayden" or "Joe"), the type (e.g., 'Meeting', 'Task', etc.), and the datetime range (start_time and end_time). Ensure the datetime is formatted as `YYYY-MM-DD HH:MM:SS`.
 
 ### Expected Output Format:
 {
   "sentiment": "POSITIVE",
+  "summary": "The user scheduled a meeting with Jayden for next Tuesday at 3 PM.",
   "event": 
     {
       "name": "Meeting with Jayden",
@@ -42,27 +64,38 @@ Your task is to:
 ### Key Details:
 - Ensure the sentiment reflects the overall tone of the user during the conversation.
 - Parse dates and times explicitly mentioned in the transcript.
-- If no event is mentioned, return an empty `event` string:
+- Provide a concise summary of the conversation.
+- If no event is mentioned, return an empty `event` field:
 {
   "sentiment": "NEUTRAL",
-  "event": ""
+  "summary": "No significant actions were taken.",
+  "event": null
 }
 - Default start_time and end_time to `null` if time details are unclear but specify the type and name if relevant.
-
-Analyze and provide the structured summary in the format above based on the provided transcript below:
 """
 
-
+# Define the function to process the transcript
 async def get_openai_response(transcript):
-    completion = await oai_client.chat.completions.create(
-    model="gpt-4o",
-    messages=[
-        {"role": "user", "content": oai_prompt + " \n " +  transcript},
-    ]
-    )   
-    output = completion.choices[0].message
-    return output
-    
+    # Call the OpenAI API with the specified schema and model
+    completion = client.beta.chat.completions.parse(
+        model="gpt-4o-2024-08-06",
+        messages=[
+            {"role": "system", "content": oai_prompt},
+            {"role": "user", "content": transcript},
+        ],
+        response_format=EventSummary,
+    )
+    # Extract and validate the parsed event
+    event_summary = completion.choices[0].message.parsed
+    print(f"event_summary {event_summary}")
+
+    # Convert the Pydantic object to a dictionary
+    response_dict = jsonable_encoder(event_summary)
+
+    response = JSONResponse(content=response_dict)
+    # Print the serialized JSON content
+    print(f"json response {response.body.decode('utf-8')}")
+    return event_summary
 
 # add connection from discord
 connection = pymysql.connect(
@@ -155,10 +188,41 @@ async def retell_call_completed(request: Request):
             agent_id = data["agent_id"] if data else None
 
             openai_summary = await get_openai_response(transcript)
+            # Extract fields from the OpenAI response
+            summary_text = openai_summary.summary
+            sentiment_text = openai_summary.sentiment
+            event_data = openai_summary.event
 
-            # TODO: add to db
+            # Update the `calls` table to store the summary and sentiment
+            update_summary_sentiment_query = """
+                UPDATE calls
+                SET summary = %s, sentiment = %s
+                WHERE id = %s
+            """
+            cursor.execute(update_summary_sentiment_query, (summary_text, sentiment_text, recent_call["id"]))
+            connection.commit()
 
+            # Populate the `calendar_events` table if there is an event
+            if event_data:
+                insert_event_query = """
+                    INSERT INTO calendar_events (name, type, contact_id, call_id, start_time, end_time, agent_id)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s)
+                """
+                cursor.execute(
+                    insert_event_query,
+                    (
+                        event_data.name,
+                        event_data.type,
+                        contact_id,
+                        recent_call["id"],
+                        event_data.start_time,
+                        event_data.end_time,
+                        agent_id
+                    )
+                )
+                connection.commit()
 
+            logger.debug("Summary, sentiment, and event data updated successfully")
 
             logger.info(
                 f"Most recent call updated: Call ID {call_id}, Duration {duration}"
