@@ -83,7 +83,7 @@ const ContactTable = () => {
       key: "agent_name",
       render: (agentName) =>
         agentName ? (
-          <Tag color="blue">{agentName}</Tag>
+          <Tag color="green">{agentName}</Tag>
         ) : (
           <Tag color="red">Unassigned</Tag>
         ),
@@ -97,14 +97,17 @@ const ContactTable = () => {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">Contacts</h1>
-      <Button
-        type="primary"
-        onClick={() => setIsModalVisible(true)}
-        className="mb-4"
-      >
-        Add Contact
-      </Button>
+      <div className="flex flex-row space-x-4">
+        <h1 className="text-2xl font-bold mb-4">Contacts</h1>
+        <Button
+          type="primary"
+          className="bg-blue-700 mb-4"
+          onClick={() => setIsModalVisible(true)}
+        >
+          Add Contact
+        </Button>
+      </div>
+
       <Table
         dataSource={contacts}
         columns={columns}

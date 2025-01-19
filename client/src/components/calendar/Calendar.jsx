@@ -30,8 +30,8 @@ const Calendar = ({ renderTags, tagTypeStates }) => {
   };
 
   return (
-    <div className="">
-      <div className="w-full max-w-full">
+    <div className="min-h-screen">
+      <div className="h-screen max-w-full">
         <div className="flex justify-center items-center space-x-2 mb-2">
           <button onClick={() => setMonth(currentMonth - 1)}>{"<"}</button>
           <h2>{`${new Date(currentYear, currentMonth).toLocaleString(

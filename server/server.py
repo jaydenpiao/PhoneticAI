@@ -3,10 +3,22 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import pymysql
 import os
+from retell import Retell
 
-# add connection from discord 
+# add connection from discord
+connection = pymysql.connect(
+    host="REMOVED",
+    user="REMOVED",
+    password="REMOVED",
+    database="nwhacks",
+    cursorclass=pymysql.cursors.DictCursor
+)  
 
 cursor = connection.cursor()
+
+# client = Retell(
+#     api_key="YOUR_RETELL_API_KEY",
+# )
 
 app = FastAPI()
 
@@ -66,7 +78,7 @@ async def get_all_events():
 
 @app.get("/events/{contact_id}")
 async def get_specific_event(contact_id: int):
-    cursor.execute("select * from calendar_events join calls on calendar_events.call_id = calls.id where calendar_events.contact_id = %s", (contact_id))
+    cursor.execute("select * from calendar_events where calendar_events.contact_id = %s", (contact_id))
     connection.commit()
     return cursor.fetchall()
 
@@ -76,8 +88,13 @@ async def get_calls_for_contact(contact_id: int):
     connection.commit()
     return cursor.fetchall()
 
-# Post requests
+# @app.get('/calls/{call_id}/audio')
+# async def get_call_audio(call_id: int):
+#     call_response = await client.call.retrieve(
+#     call_id)
+#     return call_response.get('recording_url') if 'recording_url' in call_response else None
 
+# Post requests
 class Contact(BaseModel):
     name: str
     phone_number: str
