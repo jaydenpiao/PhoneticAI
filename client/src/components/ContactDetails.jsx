@@ -20,11 +20,9 @@ const ContactDetails = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch user details
         const userResponse = await axios.get(`http://127.0.0.1:8000/contacts/${id}`);
         setUser(userResponse.data[0]);
 
-        // Fetch call details
         const callsResponse = await axios.get(`http://127.0.0.1:8000/events/${id}`);
         setCalls(callsResponse.data);
       } catch (error) {
@@ -56,20 +54,26 @@ const ContactDetails = () => {
       <div className="flex flex-col md:flex-row w-full">
         <div className="flex-1 min-h-screen p-4 border-r-[1px] border-gray-200">
           <h1 className="text-xl font-semibold text-gray-900 mb-4">Details</h1>
+          <div className="p-4 border rounded-md shadow-sm">
+          <div className="p-4 border rounded-md shadow-sm">
           <Row gutter={16}>
             <Col span={12}>
-              <Statistic
-                title="Total"
-                value={calls.reduce((total, call) => total + call.length, 0)}
-                prefix={<FieldTimeOutlined />}
-              />
+              <Card bordered={false}>
+                <Statistic
+                  title="Total"
+                  value={calls.reduce((total, call) => total + call.length, 0)}
+                  prefix={<FieldTimeOutlined />}
+                />
+              </Card>
             </Col>
             <Col span={12}>
-              <Statistic
-                title="Satisfaction"
-                value={Math.floor(Math.random() * 30) + 70}
-                suffix="/ 100"
-              />
+              <Card bordered={false}>
+                <Statistic
+                  title="Satisfaction"
+                  value={Math.floor(Math.random() * 30) + 70}
+                  suffix="/ 100"
+                />
+              </Card>
             </Col>
           </Row>
           <Row gutter={16} className="mt-4">
@@ -77,7 +81,11 @@ const ContactDetails = () => {
               <Card bordered={false}>
                 <Statistic
                   title="Positive Sentiment"
-                  value={calls.length > 0 ? (calls.filter(call => call.sentiment === "POSITIVE").length / calls.length) * 100 : 0}
+                  value={
+                    calls.length > 0
+                      ? (calls.filter(call => call.sentiment === "POSITIVE").length / calls.length) * 100
+                      : 0
+                  }
                   precision={2}
                   valueStyle={{ color: "#3f8600" }}
                   prefix={<ArrowUpOutlined />}
@@ -89,7 +97,11 @@ const ContactDetails = () => {
               <Card bordered={false}>
                 <Statistic
                   title="Negative Sentiment"
-                  value={calls.length > 0 ? (calls.filter(call => call.sentiment === "NEGATIVE").length / calls.length) * 100 : 0}
+                  value={
+                    calls.length > 0
+                      ? (calls.filter(call => call.sentiment === "NEGATIVE").length / calls.length) * 100
+                      : 0
+                  }
                   precision={2}
                   valueStyle={{ color: "#cf1322" }}
                   prefix={<ArrowDownOutlined />}
@@ -98,7 +110,9 @@ const ContactDetails = () => {
               </Card>
             </Col>
           </Row>
-          <h1 className="text-xl font-semibold text-gray-900 m-4">Events</h1>
+        </div>
+          </div>
+          <h1 className="text-xl font-semibold text-gray-900 mt-6">Events</h1>
           <div className="w-full flex flex-col justify-start items-start space-y-2 border border-base rounded-md p-4">
             <Timeline
               items={[
