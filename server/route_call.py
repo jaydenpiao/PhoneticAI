@@ -21,6 +21,16 @@ client = OpenAI(
     api_key=os.getenv("OPENAI_API_KEY")
 )
 
+from datetime import datetime
+
+# Get the current date and time
+current_time = datetime.now()
+
+# Format it as YYYY-MM-DD HH:MM:SS if needed
+formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S")
+
+print("Current date/time:", formatted_time)
+
 # Define the Pydantic model for the expected response
 class Event(BaseModel):
     name: str  # Name of the event
@@ -37,7 +47,7 @@ class EventSummary(BaseModel):
 oai_prompt = """
 You are analyzing a transcript between an agent and a user. The transcript is in the following format:
 
-**Current Date and Time**: 2025-01-19 12:30:00
+**Current Date and Time**: {formatted_time}
 
 **Transcript Example 1:**
 Agent: Hello! This is Chloe, Jayden's virtual assistant. Jayden is currently unavailable. How may I help you? 
