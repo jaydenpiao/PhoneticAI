@@ -3,6 +3,7 @@ import { FaPhoneAlt, FaBuilding, FaRobot, FaArrowRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import IPhone from "../iphone.jpg";
 import Logo from "../logo.png";
+import PhoneticLogo from "../phonetic_ai_logo.png";
 
 const Landing = () => {
   const features = [
@@ -23,18 +24,26 @@ const Landing = () => {
   return (
     <section>
       <div className="w-screen h-screen mx-auto px-4 py-28 gap-12 text-gray-600 bg-blue-50 md:px-16 xl:flex">
-        <img src={IPhone} width={300} height={450}></img>
-        <div className="space-y-5 lg:mt-28 max-w-2xl mx-auto text-center xl:text-left">
-          <div className="flex flex-wrap items-center justify-center gap-6 xl:justify-start">
-            {features.map((item, idx) => (
-              <div
-                key={idx}
-                className="flex items-center gap-x-2 text-gray-500 text-sm"
-              >
-                {item.icon}
-                {item.name}
-              </div>
-            ))}
+        <img src={IPhone} width={325} height={350}></img>
+        <div className="space-y-5 lg:mt-32 max-w-2xl mx-auto text-center xl:text-left">
+          <div className="flex">
+            <img
+              className="mr-4"
+              src={PhoneticLogo}
+              width={70}
+              height={70}
+            ></img>
+            <div className="flex flex-wrap items-center justify-center gap-6 xl:justify-start">
+              {features.map((item, idx) => (
+                <div
+                  key={idx}
+                  className="flex items-center gap-x-2 text-gray-500 text-sm"
+                >
+                  {item.icon}
+                  {item.name}
+                </div>
+              ))}
+            </div>
           </div>
           <h1 className="text-4xl text-gray-900 font-extrabold mx-auto md:text-5xl">
             Empower Your Business with AI-Driven Phone Agents
