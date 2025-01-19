@@ -37,7 +37,9 @@ class EventSummary(BaseModel):
 oai_prompt = """
 You are analyzing a transcript between an agent and a user. The transcript is in the following format:
 
-**Transcript Example:**
+**Current Date and Time**: 2025-01-19 12:30:00
+
+**Transcript Example 1:**
 Agent: Hello! This is Chloe, Jayden's virtual assistant. Jayden is currently unavailable. How may I help you? 
 User: I want to book a meeting for next Tuesday at 3 PM.  
 Agent: Sure! Just to make everything more clear, who am I speaking with?
@@ -45,6 +47,12 @@ User: This is Alex.
 Agent: Great! Let me confirm. A meeting with Jayden is scheduled for next Tuesday, 3 PM to 4 PM. Anything else I can help with?  
 User: No, thank you.  
 Agent: Have a great day!  
+
+**Transcript Example 2:**
+Agent: Yo what up G! It's Lebron. What you want?
+User: Yo what up Lebron! I need to do a Demo with Jayden tomorrow at 4pm.
+Agent: You got it. Tomorrow at 4PM?
+User: Yes
 
 Your task is to:
 
@@ -55,18 +63,22 @@ Your task is to:
 
 2. **Summarize the Transcript**: Provide a concise summary of the conversation, focusing on the key actions and context.
 
-3. **Identify Event**: Extract the event such as meetings, tasks, follow-ups, demos, deadlines, or support requests. For meetings, extract the names of the caller (e.g., "Kevin" or "Joe"), the type (e.g., 'Meeting', 'Task', etc.), and the datetime range (start_time and end_time). Ensure the datetime is formatted as `YYYY-MM-DD HH:MM:SS`.
+3. **Identify Event**: Extract the event (meeting, assignment, etc.) and:
+    - Caller's name (e.g., "Alex", "Morgan", etc.)
+    - Event type (e.g. "Meeting", "Assignment", "Task", etc.)
+    - Datetime range (start_time and end_time) in the format YYYY-MM-DD HH:MM:SS.
+    - If the user only says “tomorrow at 4pm” and **today** is 2025-01-19 12:30:00, then “tomorrow at 4pm” should be interpreted as 2025-01-20 16:00:00.
 
 ### Expected Output Format:
 {
   "sentiment": "POSITIVE",
-  "summary": "Alex scheduled a meeting with Jayden for next Tuesday at 3 PM.",
+  "summary": "Morgan scheduled an Demo with Jayden for tomorrow at 4pm.",
   "event": 
     {
-      "name": "Meeting with Alex",
-      "type": "Meeting",
-      "start_time": "2025-01-20 15:00:00",
-      "end_time": "2025-01-20 16:00:00"
+        "name": "Demo with Morgan",
+        "type": "Demo",
+        "start_time": "2025-01-20 16:00:00",
+        "end_time": "2025-01-20 17:00:00"
     }
 }
 
