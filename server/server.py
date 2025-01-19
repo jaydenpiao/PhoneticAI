@@ -5,6 +5,13 @@ import pymysql
 import os
 
 # add connection from discord 
+connection = pymysql.connect(
+    host="REMOVED",
+    user="REMOVED",
+    password="REMOVED",
+    database="nwhacks",
+    cursorclass=pymysql.cursors.DictCursor
+)
 
 cursor = connection.cursor()
 
@@ -33,12 +40,12 @@ async def get_all_agents():
 @app.get("/contacts")
 async def get_all_contacts():
     cursor.execute("""
-        SELECT contacts.id, contacts.name, contacts.phone_number as phone_number, contacts.agent_id, agents.name AS agent_name
+        SELECT contacts.id, contacts.name, contacts.phone_number as phone_number, contacts.notes as notes, contacts.agent_id, agents.name AS agent_name
         FROM contacts
         LEFT OUTER JOIN agents ON contacts.agent_id = agents.id
     """)
     connection.commit()
-    return cursor.fetchall()
+    return cursor.fetchall() 
 
 @app.get("/contacts/{contact_id}")
 async def get_single_contact(contact_id: int):

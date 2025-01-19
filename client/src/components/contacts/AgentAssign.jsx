@@ -124,17 +124,17 @@ const AgentAssign = () => {
 
   return (
     <div className="flex overflow-x-auto gap-6 p-4 w-full h-full bg-white">
-      <div className="flex flex-row min-w-[100%] space-x-6">
+      <div className="flex flex-row min-w-[100%] space-x-4">
         {columns.map((column) => (
           <div
             key={column.id}
-            className="flex flex-col flex-shrink-0 w-1/3 bg-gray-100 shadow-lg rounded-md min-h-screen"
+            className="flex flex-col flex-shrink-0 w-1/3 bg-gray-50 shadow-lg rounded-md min-h-screen"
             onDrop={(event) => handleDrop(event, column.id)}
             onDragOver={handleDragOver}
           >
-            <div className="p-4 border-b">
-              <h2 className="text-lg font-bold">{column.title}</h2>
-              <p className="text-sm text-gray-500">
+            <div className="p-4 border-b bg-blue-50 rounded-md">
+              <h2 className="text-lg text-blue-800 font-bold">{column.title}</h2>
+              <p className="text-sm text-gray-600">
                 {column.contacts.length} Contacts
               </p>
             </div>

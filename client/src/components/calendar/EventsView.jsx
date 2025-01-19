@@ -163,7 +163,7 @@ const EventsView = () => {
 
   return (
     <div className="">
-      <h2 className="m-4 text-3xl tracking-tight font-bold">Events</h2>
+      <h1 className="text-2xl font-bold mb-4 ml-2">Events</h1>
       <div className="p-8">
         <Calendar renderTags={renderTags} tagTypeStates={tagStates} />
       </div>

@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS contacts (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     phone_number VARCHAR(255) NOT NULL UNIQUE,
+    notes VARCHAR(255),
     agent_id INT,
     FOREIGN KEY (agent_id) REFERENCES agents(id)
 );

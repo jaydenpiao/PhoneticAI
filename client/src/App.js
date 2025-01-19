@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {
   AppstoreOutlined,
+  BarChartOutlined,
   MailOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
@@ -36,13 +37,18 @@ const App = () => {
     },
     {
       label: <Link to="/calendar">Calendar</Link>,
-      key: "app",
+      key: "calendar",
       icon: <AppstoreOutlined />,
     },
     {
       label: <Link to="/contacts">Contacts</Link>,
-      key: "SubMenu",
+      key: "contacts",
       icon: <SettingOutlined />,
+    },
+    {
+      label: <Link to="/dashboard">Dashboard</Link>,
+      key: "dashboard",
+      icon: <BarChartOutlined />,
     },
   ];
 

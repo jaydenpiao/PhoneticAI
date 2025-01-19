@@ -1,6 +1,7 @@
 import React from "react";
 import { FaPhoneAlt, FaBuilding, FaRobot, FaArrowRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import IPhone from "../iphone.jpg";
 
 const Landing = () => {
   const features = [
@@ -21,6 +22,7 @@ const Landing = () => {
   return (
     <section>
       <div className="w-screen h-screen mx-auto px-4 py-28 gap-12 text-gray-600 bg-blue-50 md:px-16 xl:flex">
+        <img src={IPhone} width={300} height={450}></img>
         <div className="space-y-5 lg:mt-28 max-w-2xl mx-auto text-center xl:text-left">
           <div className="flex flex-wrap items-center justify-center gap-6 xl:justify-start">
             {features.map((item, idx) => (

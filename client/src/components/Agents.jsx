@@ -37,7 +37,7 @@ const Agents = () => {
   }, []);
 
   return (
-    <section className="bg-white">
+    <section className="bg-blue-50">
       <div className="py-8 px-4 mx-auto max-w-screen-xl sm:py-16 lg:px-6">
         <div className="max-w-screen-md mb-8 lg:mb-16">
           <h2 className="mb-4 text-4xl tracking-tight font-extrabold">
@@ -59,7 +59,8 @@ const Agents = () => {
                   <Avatar
                     src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${
                       Math.floor(Math.random() * 1000) + 1
-                    }`}
+                      }`}
+                    
                     size={"large"}
                   />
 

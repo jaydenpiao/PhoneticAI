@@ -12,7 +12,7 @@ const items = [
   },
   {
     key: "2",
-    label: "Agent Assignment",
+    label: "Assign Agents",
     children: <AgentAssign />,
   },
 ];
