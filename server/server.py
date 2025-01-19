@@ -5,6 +5,8 @@ import pymysql
 import os
 from retell import Retell
 
+from route_call import router as calls
+
 # add connection from discord
 connection = pymysql.connect(
     host="REMOVED",
@@ -16,11 +18,13 @@ connection = pymysql.connect(
 
 cursor = connection.cursor()
 
-# client = Retell(
-#     api_key="YOUR_RETELL_API_KEY",
-# )
+client = Retell(
+    api_key="REMOVED",
+)
 
 app = FastAPI()
+
+app.include_router(calls, prefix="", tags=[])
 
 app.add_middleware(
     CORSMiddleware,
@@ -86,13 +90,23 @@ async def get_specific_event(contact_id: int):
 async def get_calls_for_contact(contact_id: int):
     cursor.execute("select * from calls where contact_id = %s", (contact_id))
     connection.commit()
-    return cursor.fetchall()
+    calls =  cursor.fetchall()
+    print(calls)
+    for call in calls:
+        if call['retell_call_id'] is not None:
+            call_id = call['retell_call_id']
+            print(call_id)
+            call_response = client.call.retrieve(
+            call_id)
+            call['audio_url'] = call_response.recording_url
+    return calls
+
 
 # @app.get('/calls/{call_id}/audio')
-# async def get_call_audio(call_id: int):
-#     call_response = await client.call.retrieve(
+# async def get_call_audio(call_id: str):
+#     call_response = client.call.retrieve(
 #     call_id)
-#     return call_response.get('recording_url') if 'recording_url' in call_response else None
+#     return call_response.recording_url
 
 # Post requests
 class Contact(BaseModel):

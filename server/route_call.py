@@ -8,6 +8,11 @@ from pydantic import BaseModel
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 import json
+from fastapi import APIRouter
+from typing import Optional
+
+router = APIRouter()
+
 
 client = OpenAI(
     # openai api key from discord
@@ -18,13 +23,13 @@ client = OpenAI(
 class Event(BaseModel):
     name: str  # Name of the event
     type: str  # Type of the event (e.g., Meeting, Task, etc.)
-    start_time: str | None  # Start time in ISO 8601 format or None
-    end_time: str | None  # End time in ISO 8601 format or None
+    start_time: Optional[str]  # Start time in ISO 8601 format or None
+    end_time: Optional[str]  # End time in ISO 8601 format or None
 
 class EventSummary(BaseModel):
     sentiment: str  # Overall sentiment of the user's interaction
     summary: str  # Summary of the transcript
-    event: Event | None  # Event details or None if no event exists
+    event: Optional[Event]  # Event details or None if no event exists
 
 # Prompt to extract event details and sentiment
 oai_prompt = """
@@ -118,9 +123,7 @@ logger = logging.getLogger(__name__)
 
 cursor = connection.cursor()
 
-app = FastAPI()
-
-@app.post("/call_status")
+@router.post("/call_status")
 async def retell_call_completed(request: Request):
     """
     Handle Retell call-completed webhook and update the most recent call row.
@@ -234,7 +237,7 @@ async def retell_call_completed(request: Request):
         raise HTTPException(status_code=500, detail="Internal Server Error")
     
 
-@app.post("/voice")
+@router.post("/voice")
 async def route_call(
     From: str = Form(...)
 ):

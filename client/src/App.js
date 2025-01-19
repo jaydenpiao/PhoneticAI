@@ -16,7 +16,7 @@ import Landing from "./components/Landing";
 import ContactDetails from "./components/ContactDetails";
 
 const App = () => {
-  const [current, setCurrent] = useState("mail");
+  const [current, setCurrent] = useState("landing");
 
   const onClick = (e) => {
     console.log("click ", e);
