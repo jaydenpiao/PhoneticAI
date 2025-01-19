@@ -35,7 +35,7 @@ async def get_all_contacts():
     cursor.execute("""
         SELECT contacts.name AS contact_name, contacts.phone_number as phone_number, agents.name AS agent_name
         FROM contacts
-        JOIN agents ON contacts.agent_id = agents.id
+        LEFT OUTER JOIN agents ON contacts.agent_id = agents.id
     """)
     connection.commit()
     return cursor.fetchall()
