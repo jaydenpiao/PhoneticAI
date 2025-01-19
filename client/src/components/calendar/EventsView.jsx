@@ -5,7 +5,6 @@ import axios from "axios";
 
 const EventsView = () => {
   const [events, setEvents] = useState([]);
-  const [search, setSearch] = useState(null);
   const [tagStates, setTagStates] = useState([]);
 
   const STATUS_TYPES = {
@@ -21,7 +20,7 @@ const EventsView = () => {
     const fetchEvents = async () => {
       try {
         const response = await axios.get("http://127.0.0.1:8000/events");
-        // Assuming the API returns events in the format you've shared
+        console.log(response.data);
         const formattedEvents = response.data.map((event) => ({
           id: event.id,
           name: event.name,
@@ -29,8 +28,6 @@ const EventsView = () => {
           start_time: event.start_time,
           end_time: event.end_time,
           description: `Event Type: ${event.type}`,
-          siteType: "Remote", // Example placeholder, update as needed
-          numTasks: 1, // Example placeholder, update as needed
         }));
         setEvents(formattedEvents);
       } catch (error) {
@@ -39,51 +36,27 @@ const EventsView = () => {
     };
 
     fetchEvents();
-  }, [search]);
+  }, []);
 
   useEffect(() => {
     setTagStates([
-      {
-        state: true,
-        text: STATUS_TYPES.MEETING,
-        colour: "#0d47a1",
-      },
-      {
-        state: true,
-        text: STATUS_TYPES.FOLLOW_UP,
-        colour: "#ffa300",
-      },
-      {
-        state: true,
-        text: STATUS_TYPES.TASK,
-        colour: "#238636",
-      },
-      {
-        state: true,
-        text: STATUS_TYPES.DEMO,
-        colour: "#673ab7",
-      },
-      {
-        state: true,
-        text: STATUS_TYPES.DEADLINE,
-        colour: "#f44336",
-      },
-      {
-        state: true,
-        text: STATUS_TYPES.SUPPORT,
-        colour: "#009688",
-      },
+      { state: true, text: STATUS_TYPES.MEETING, colour: "#0d47a1" },
+      { state: true, text: STATUS_TYPES.FOLLOW_UP, colour: "#ffa300" },
+      { state: true, text: STATUS_TYPES.TASK, colour: "#238636" },
+      { state: true, text: STATUS_TYPES.DEMO, colour: "#673ab7" },
+      { state: true, text: STATUS_TYPES.DEADLINE, colour: "#f44336" },
+      { state: true, text: STATUS_TYPES.SUPPORT, colour: "#009688" },
     ]);
   }, []);
 
-  const renderTags = (date, currentYear, currentMonth) => {
+  const renderTags = (date, currentYear, currentMonth, tagTypeStates) => {
     return events
       .filter((event) => {
         const startDate = new Date(event.start_time);
         const endDate = new Date(event.end_time);
 
-        const shouldShowTag = tagStates.find(
-          (tagState) => tagState.state && tagState.text === event.type
+        const tagState = tagTypeStates.find(
+          (tag) => tag.text === event.type && tag.state
         );
 
         const isStartDateBefore =
@@ -100,73 +73,75 @@ const EventsView = () => {
               (endDate.getMonth() === currentMonth &&
                 endDate.getDate() >= date)));
 
-        return shouldShowTag && isStartDateBefore && isEndDateAfter;
+        return tagState && isStartDateBefore && isEndDateAfter;
       })
-      .map((event, index) => (
-        <Popover
-          key={index}
-          content={
-            <div className="flex flex-col space-y-3 max-w-sm">
-              {/* Event Title */}
-              <h3 className="text-base font-bold text-blue-900">
-                {event.name}
-              </h3>
+      .map((event, index) => {
+        const tagState = tagTypeStates.find((tag) => tag.text === event.type);
+        const color = tagState ? tagState.colour : "#ccc";
 
-              {/* Date and Time */}
-              <p className="text-sm text-gray-600">
-                <strong>Start:</strong>{" "}
-                {new Date(event.start_time).toLocaleString("en-US", {
-                  month: "short",
-                  day: "numeric",
-                  year: "numeric",
-                  hour: "numeric",
-                  minute: "numeric",
-                })}
-              </p>
-              <p className="text-sm text-gray-600">
-                <strong>End:</strong>{" "}
-                {new Date(event.end_time).toLocaleString("en-US", {
-                  month: "short",
-                  day: "numeric",
-                  year: "numeric",
-                  hour: "numeric",
-                  minute: "numeric",
-                })}
-              </p>
-
-              {/* Event Description */}
-              <div className="text-sm text-gray-700">
-                <strong>Description:</strong>
-                <p>{event.description}</p>
+        return (
+          <Popover
+            key={index}
+            overlayStyle={{ width: "300px" }}
+            content={
+              <div className="p-4 space-y-2">
+                <h3 className="text-lg font-semibold text-gray-800">
+                  {event.name}
+                </h3>
+                <p className="text-sm text-gray-600">
+                  <strong>Start:</strong>{" "}
+                  {new Date(event.start_time).toLocaleString("en-US", {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                    hour: "numeric",
+                    minute: "numeric",
+                  })}
+                </p>
+                <p className="text-sm text-gray-600">
+                  <strong>End:</strong>{" "}
+                  {new Date(event.end_time).toLocaleString("en-US", {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                    hour: "numeric",
+                    minute: "numeric",
+                  })}
+                </p>
+                <p className="text-sm text-gray-600">
+                  <strong>Location:</strong> {event.siteType}
+                </p>
+                <p className="text-sm text-gray-600">
+                  <strong>Description:</strong> {event.description}
+                </p>
+                <p className="text-sm text-gray-600">
+                  <strong>Tasks:</strong> {event.numTasks} task(s)
+                </p>
               </div>
-
-              {/* Location */}
-              <div className="text-sm text-gray-700">
-                <strong>Location:</strong>
-                <p>{event.siteType}</p>
-              </div>
-
-              {/* Number of Tasks */}
-              <div className="text-sm text-gray-700">
-                <strong>Tasks:</strong>
-                <p>{event.numTasks} task(s)</p>
-              </div>
+            }
+          >
+            <div
+              className="bg-gray-200 px-2 py-1 rounded text-xs text-gray-700 font-medium cursor-pointer hover:bg-gray-300"
+              style={{
+                backgroundColor: color,
+                color: "#fff",
+                maxWidth: "100%",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
+              {event.name}
             </div>
-          }
-        >
-          <div className="flex items-center text-xs text-blue-900 cursor-pointer hover:underline">
-            {event.name}
-          </div>
-        </Popover>
-      ));
+          </Popover>
+        );
+      });
   };
 
   return (
-    <div className="">
-      <h1 className="text-2xl font-bold mb-4 ml-2">Events</h1>
-      <div className="p-8">
-        <Calendar renderTags={renderTags} tagTypeStates={tagStates} />
-      </div>
+    <div className="bg-white p-6 rounded-lg shadow-md">
+      <h1 className="text-2xl font-bold mb-6">Events</h1>
+      <Calendar renderTags={renderTags} tagTypeStates={tagStates} />
     </div>
   );
 };

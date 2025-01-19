@@ -38,12 +38,10 @@ const Agents = () => {
 
   return (
     <section className="bg-blue-50">
-      <div className="py-8 px-4 mx-auto max-w-screen-xl sm:py-16 lg:px-6">
-        <div className="max-w-screen-md mb-8 lg:mb-16">
-          <h2 className="mb-4 text-4xl tracking-tight font-extrabold">
-            Meet Our AI Agents
-          </h2>
-          <p className="text-gray-500 sm:text-xl">
+      <div className="px-4 py-8 mx-auto max-w-screen-xl">
+        <div className="max-w-screen-md mb-4">
+          <h1 className="text-2xl font-bold mb-4">Meet our AI Agents</h1>
+          <p className="text-gray-500 sm:text-md">
             Discover our agents and their characteristics and assign them to
             serve your contacts.
           </p>
@@ -59,8 +57,7 @@ const Agents = () => {
                   <Avatar
                     src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${
                       Math.floor(Math.random() * 1000) + 1
-                      }`}
-                    
+                    }`}
                     size={"large"}
                   />
 
@@ -83,11 +80,6 @@ const Agents = () => {
               </div>
               <h3 className="mb-2 text-xl font-bold">{agent.name}</h3>
               <p className="text-gray-400">{agent.prompt}</p>
-              {agent.phone_number && (
-                <p className="text-sm text-gray-500 mt-2">
-                  Phone: {agent.phone_number}
-                </p>
-              )}
             </div>
           ))}
         </div>

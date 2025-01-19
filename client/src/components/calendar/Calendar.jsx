@@ -31,25 +31,6 @@ const Calendar = ({ renderTags, tagTypeStates }) => {
 
   return (
     <div className="">
-      <div className="flex flex-row w-full ml-2 mt-1 space-x-1 justify-start items-center">
-        {tagTypeStates.map((tagState, index) => (
-          <div
-            key={index}
-            className="flex flex-row items-center space-x-1 text-sm"
-          >
-            <input
-              type="checkbox"
-              checked={tagState.state}
-              onChange={(e) => {
-                const updatedStates = [...tagTypeStates];
-                updatedStates[index].state = e.target.checked;
-                tagState.setState(updatedStates);
-              }}
-            />
-            <span>{tagState.text}</span>
-          </div>
-        ))}
-      </div>
       <div className="w-full max-w-full">
         <div className="flex justify-center items-center space-x-2 mb-2">
           <button onClick={() => setMonth(currentMonth - 1)}>{"<"}</button>
@@ -72,7 +53,8 @@ const Calendar = ({ renderTags, tagTypeStates }) => {
             <div key={index} className="border h-24">
               <div className="text-center">{date}</div>
               <div className="overflow-y-auto">
-                {renderTags(date, currentYear, currentMonth)}
+                {/* Pass tagTypeStates to renderTags */}
+                {renderTags(date, currentYear, currentMonth, tagTypeStates)}
               </div>
             </div>
           ))}
