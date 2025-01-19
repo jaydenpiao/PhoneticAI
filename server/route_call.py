@@ -40,6 +40,8 @@ You are analyzing a transcript between an agent and a user. The transcript is in
 **Transcript Example:**
 Agent: Hello! This is Chloe, Jayden's virtual assistant. Jayden is currently unavailable. How may I help you? 
 User: I want to book a meeting for next Tuesday at 3 PM.  
+Agent: Sure! Just to make everything more clear, who am I speaking with?
+User: This is Alex.
 Agent: Great! Let me confirm. A meeting with Jayden is scheduled for next Tuesday, 3 PM to 4 PM. Anything else I can help with?  
 User: No, thank you.  
 Agent: Have a great day!  
@@ -53,15 +55,15 @@ Your task is to:
 
 2. **Summarize the Transcript**: Provide a concise summary of the conversation, focusing on the key actions and context.
 
-3. **Identify Event**: Extract the event such as meetings, tasks, follow-ups, demos, deadlines, or support requests. For meetings, extract the names of participants (e.g., "Jayden" or "Joe"), the type (e.g., 'Meeting', 'Task', etc.), and the datetime range (start_time and end_time). Ensure the datetime is formatted as `YYYY-MM-DD HH:MM:SS`.
+3. **Identify Event**: Extract the event such as meetings, tasks, follow-ups, demos, deadlines, or support requests. For meetings, extract the names of the caller (e.g., "Kevin" or "Joe"), the type (e.g., 'Meeting', 'Task', etc.), and the datetime range (start_time and end_time). Ensure the datetime is formatted as `YYYY-MM-DD HH:MM:SS`.
 
 ### Expected Output Format:
 {
   "sentiment": "POSITIVE",
-  "summary": "The user scheduled a meeting with Jayden for next Tuesday at 3 PM.",
+  "summary": "Alex scheduled a meeting with Jayden for next Tuesday at 3 PM.",
   "event": 
     {
-      "name": "Meeting with Jayden",
+      "name": "Meeting with Alex",
       "type": "Meeting",
       "start_time": "2025-01-20 15:00:00",
       "end_time": "2025-01-20 16:00:00"
