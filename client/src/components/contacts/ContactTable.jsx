@@ -18,6 +18,7 @@ const ContactTable = () => {
             contact_name: contact.name,
             phone_number: contact.phone_number,
             agent_name: contact.agent_name,
+            id: contact.id,
             notes: contact.notes || "---",
           }))
         );
@@ -44,6 +45,7 @@ const ContactTable = () => {
         response.data.map((contact, index) => ({
           key: index.toString(),
           contact_name: contact.name,
+          id: contact.id,
           phone_number: contact.phone_number,
           agent_name: contact.agent_name,
           notes: contact.notes || "---",

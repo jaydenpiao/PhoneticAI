@@ -45,7 +45,7 @@ async def get_all_contacts():
         LEFT OUTER JOIN agents ON contacts.agent_id = agents.id
     """)
     connection.commit()
-    return cursor.fetchall() 
+    return cursor.fetchall()
 
 @app.get("/contacts/{contact_id}")
 async def get_single_contact(contact_id: int):
@@ -68,6 +68,12 @@ async def get_specific_call(call_id: int):
 @app.get("/events")
 async def get_all_events():
     cursor.execute("select * from calendar_events")
+    connection.commit()
+    return cursor.fetchall()
+
+@app.get("/events/{contact_id}")
+async def get_specific_event(contact_id: int):
+    cursor.execute("select * from calendar_events join calls on calendar_events.call_id = calls.id where calendar_events.contact_id = %s", (contact_id))
     connection.commit()
     return cursor.fetchall()
 
