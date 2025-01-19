@@ -64,25 +64,25 @@ const CallList = ({ calls, downloadTranscript }) => {
                   {getSentimentIcon(call.sentiment)}
                 </Space>
               </div>
-              <audio
-                controls
-                style={{ width: "500px", marginTop: "6px" }}
-                src={call.audio_url} // Ensure the audio URL is provided in your call object
-              >
-                Your browser does not support the audio element.
-              </audio>
+              <div className="flex flex-row space-x-4">
+                <audio
+                  controls
+                  style={{ width: "500px", marginTop: "6px" }}
+                  src={call.audio_url} // Ensure the audio URL is provided in your call object
+                >
+                  Your browser does not support the audio element.
+                </audio>
+                <Button
+                  type="primary"
+                  size="default"
+                  className="bg-white text-blue-700 mt-4"
+                  icon={<DownloadOutlined />}
+                  onClick={() => downloadTranscript(call.transcript, call.id)}
+                ></Button>
+              </div>
             </div>
 
             {/* Download Button */}
-            <Button
-              type="primary"
-              size="small"
-              className="bg-blue-700"
-              icon={<DownloadOutlined />}
-              onClick={() => downloadTranscript(call.transcript, call.id)}
-            >
-              Transcript
-            </Button>
           </div>
         </Card>
       ))}
