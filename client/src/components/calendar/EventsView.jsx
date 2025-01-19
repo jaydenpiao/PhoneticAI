@@ -27,7 +27,7 @@ const EventsView = () => {
           type: event.type,
           start_time: event.start_time,
           end_time: event.end_time,
-          description: `Event Type: ${event.type}`,
+          description: `${event.type}`,
         }));
         setEvents(formattedEvents);
       } catch (error) {
