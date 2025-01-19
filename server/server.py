@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import pymysql
 import os
@@ -8,6 +9,14 @@ import os
 cursor = connection.cursor()
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/")
 async def main():
@@ -101,3 +110,79 @@ async def update_contact_agent(request: UpdateAgentRequest):
     except Exception as e:
         connection.rollback()
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
+
+# Statistics
+@app.get("/statistics")
+async def get_statistics():
+    stats = {}
+
+    # 1. Call length statistics
+    cursor.execute("""
+        SELECT 
+            AVG(length) AS avg_length, 
+            MAX(length) AS max_length, 
+            MIN(length) AS min_length, 
+            SUM(length) AS total_length 
+        FROM calls
+    """)
+    call_stats = cursor.fetchone()
+    stats["call_stats"] = call_stats
+
+    # 2. Overall sentiment counts
+    cursor.execute("""
+        SELECT sentiment, COUNT(*) AS count
+        FROM calls 
+        GROUP BY sentiment
+    """)
+    sentiment_rows = cursor.fetchall()
+    sentiments = {"POSITIVE": 0, "NEUTRAL": 0, "NEGATIVE": 0}
+    total_count = 0
+    for row in sentiment_rows:
+        sentiments[row["sentiment"]] = row["count"]
+        total_count += row["count"]
+    sentiments["total_count"] = total_count
+    stats["overall_sentiment"] = sentiments
+
+    # 3. Number of calendar events
+    cursor.execute("SELECT COUNT(*) AS event_count FROM calendar_events")
+    event_count = cursor.fetchone()["event_count"]
+    stats["calendar_event_count"] = event_count
+
+    # 4. Agent use count (using agent names)
+    cursor.execute("""
+        SELECT a.name, COUNT(c.id) AS call_count
+        FROM calls c 
+        JOIN agents a ON c.agent_id = a.id
+        GROUP BY c.agent_id, a.name
+    """)
+    agent_rows = cursor.fetchall()
+    agent_usage = {row["name"]: row["call_count"] for row in agent_rows}
+    stats["agent_usage"] = agent_usage
+
+    # COMMENT OUT BY DAY
+    # # 5. Call length by date (aggregated per day)
+    # cursor.execute("""
+    #     SELECT DATE(timestamp) AS date, SUM(length) AS call_length
+    #     FROM calls
+    #     GROUP BY DATE(timestamp)
+    #     ORDER BY date
+    # """)
+    # time_rows = cursor.fetchall()
+    # call_length_by_time = [
+    #     [row["date"].isoformat() if hasattr(row["date"], "isoformat") else str(row["date"]), row["call_length"]]
+    #     for row in time_rows
+    # ]
+    # stats["call_length_by_time"] = call_length_by_time
+    
+    # 5. Call length by time (hourly)
+    cursor.execute("""
+        SELECT DATE_FORMAT(timestamp, '%Y-%m-%d %H:00:00') AS hour, SUM(length) AS call_length
+        FROM calls
+        GROUP BY hour
+        ORDER BY hour
+    """)
+    time_rows = cursor.fetchall()
+    call_length_by_time = [[row["hour"], row["call_length"]] for row in time_rows]
+    stats["call_length_by_time"] = call_length_by_time
+
+    return stats
