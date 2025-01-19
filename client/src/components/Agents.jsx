@@ -1,5 +1,23 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { Avatar, Typography } from "antd";
+
+const { Text } = Typography;
+
+const textModels = [
+  "gpt-4o",
+  "anthropic-4b",
+  "llama-72b-turbo",
+  "whisper-1",
+  "text-bison",
+  "vertex-ai-palm",
+  "bert-base-uncased",
+  "claude-instant-v1",
+  "claude-2",
+  "azure-gpt-4",
+  "azure-davinci",
+  "ernie-4.0",
+];
 
 const Agents = () => {
   const [agents, setAgents] = useState([]);
@@ -36,15 +54,31 @@ const Agents = () => {
               key={agent.id}
               className="p-6 rounded-lg shadow-md bg-white hover:shadow-lg transition-shadow duration-200"
             >
-              <div className="flex justify-center items-center mb-4 w-12 h-12 rounded-full bg-blue-100">
-                <svg
+              <div className="flex justify-start items-center space-x-2">
+                <div className="flex justify-center items-center mb-4 w-12 h-12 rounded-full bg-blue-100">
+                  <Avatar
+                    src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${
+                      Math.floor(Math.random() * 1000) + 1
+                    }`}
+                    size={"large"}
+                  />
+
+                  {/* <svg
                   className="w-6 h-6 text-blue-600"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path d="M10 2a8 8 0 100 16 8 8 0 000-16zM8 12a1 1 0 110 2 1 1 0 010-2zm0-8a1 1 0 110 2 1 1 0 010-2zm4 8a1 1 0 110 2 1 1 0 010-2zm0-8a1 1 0 110 2 1 1 0 010-2z"></path>
-                </svg>
+                </svg> */}
+                </div>
+                <Text code>
+                  {
+                    textModels[
+                      Math.floor(Math.random() * (textModels.length - 1)) + 1
+                    ]
+                  }
+                </Text>
               </div>
               <h3 className="mb-2 text-xl font-bold">{agent.name}</h3>
               <p className="text-gray-400">{agent.prompt}</p>

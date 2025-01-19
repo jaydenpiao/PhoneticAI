@@ -1,7 +1,8 @@
 import React from "react";
 import { Card, Avatar } from "antd";
 
-const Contact = ({ contact, sourceColumnId, onDragStart }) => {
+const Contact = ({ key, contact, sourceColumnId, onDragStart }) => {
+  console.log(contact);
   return (
     <Card
       className="contact-card"
@@ -9,8 +10,11 @@ const Contact = ({ contact, sourceColumnId, onDragStart }) => {
       onDragStart={(event) => onDragStart(event, contact.id, sourceColumnId)}
     >
       <div className="flex items-center space-x-4">
-        {/* Avatar */}
-        <Avatar src="https://api.dicebear.com/7.x/miniavs/svg?seed=1" />
+        <Avatar
+          src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${
+            Math.floor(Math.random() * 1000) + 1
+          }`}
+        />
         {/* Contact Details */}
         <div>
           <p className="text-lg font-bold">{contact.name}</p>

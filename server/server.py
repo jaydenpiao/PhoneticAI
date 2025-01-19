@@ -5,6 +5,13 @@ import pymysql
 import os
 
 # add connection from discord 
+connection = pymysql.connect(
+    host="REMOVED",
+    user="REMOVED",
+    password="REMOVED",
+    database="nwhacks",
+    cursorclass=pymysql.cursors.DictCursor
+)
 
 cursor = connection.cursor()
 
@@ -33,7 +40,7 @@ async def get_all_agents():
 @app.get("/contacts")
 async def get_all_contacts():
     cursor.execute("""
-        SELECT contacts.name AS contact_name, contacts.phone_number as phone_number, agents.name AS agent_name
+        SELECT contacts.id, contacts.name, contacts.phone_number as phone_number, contacts.agent_id, agents.name AS agent_name
         FROM contacts
         LEFT OUTER JOIN agents ON contacts.agent_id = agents.id
     """)
@@ -96,15 +103,15 @@ class UpdateAgentRequest(BaseModel):
     contact_phone_number: str
     agent_id: int
 
-@app.post("/contacts/update-agent")
-async def update_contact_agent(request: UpdateAgentRequest):
+@app.put("/contacts/{contact_id}/{agent_id}")
+async def update_contact_agent(contact_id: int, agent_id : int):
     try:
         query = """
         UPDATE contacts
         SET agent_id = %s
-        WHERE phone_number = %s
+        WHERE id = %s
         """
-        cursor.execute(query, (request.agent_id, request.contact_phone_number))
+        cursor.execute(query, (agent_id, contact_id))
         
         if cursor.rowcount == 0:
             raise HTTPException(status_code=404, detail="Contact not found")

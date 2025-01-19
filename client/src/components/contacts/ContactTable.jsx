@@ -12,7 +12,7 @@ const ContactTable = () => {
         setContacts(
           response.data.map((contact, index) => ({
             key: index.toString(), // Assign a unique key
-            contact_name: contact.contact_name,
+            contact_name: contact.name,
             phone_number: contact.phone_number,
             agent_name: contact.agent_name,
           }))
