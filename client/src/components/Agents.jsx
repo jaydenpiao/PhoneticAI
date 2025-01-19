@@ -73,11 +73,7 @@ const Agents = () => {
                 </svg> */}
                 </div>
                 <Text code>
-                  {
-                    textModels[
-                      Math.floor(Math.random() * (textModels.length - 1)) + 1
-                    ]
-                  }
+                  {textModels[Math.floor(Math.random() * textModels.length)]}
                 </Text>
               </div>
               <h3 className="mb-2 text-xl font-bold">{agent.name}</h3>

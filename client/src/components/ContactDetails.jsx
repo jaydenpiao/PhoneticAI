@@ -153,7 +153,7 @@ const ContactDetails = () => {
           <div className="p-4 border rounded-md shadow-sm">
             <Row gutter={16}>
               <Col span={12}>
-                <Card bordered={false}>
+                <Card bordered={true} className="border-[1px] bg-blue-50">
                   <Statistic
                     title="Total Call Time (s)"
                     value={
@@ -163,7 +163,7 @@ const ContactDetails = () => {
                 </Card>
               </Col>
               <Col span={12}>
-                <Card bordered={false}>
+                <Card bordered={true} className="border-[1px] bg-blue-50">
                   <Statistic
                     title="Satisfaction"
                     value={Math.floor(Math.random() * 30) + 70}
@@ -174,7 +174,7 @@ const ContactDetails = () => {
             </Row>
             <Row gutter={16} className="mt-4">
               <Col span={12}>
-                <Card bordered={false}>
+                <Card bordered={true} className="border-[1px] bg-blue-50">
                   <Statistic
                     title="Positive Sentiment"
                     value={
@@ -193,7 +193,7 @@ const ContactDetails = () => {
                 </Card>
               </Col>
               <Col span={12}>
-                <Card bordered={false}>
+                <Card bordered={true} className="border-[1px] bg-blue-50">
                   <Statistic
                     title="Negative Sentiment"
                     value={
@@ -214,7 +214,7 @@ const ContactDetails = () => {
             </Row>
           </div>
           <h1 className="text-xl font-semibold text-gray-900 mt-6">Events</h1>
-          <div className="w-full flex flex-col justify-start items-start space-y-2 border border-base rounded-md p-4">
+          <div className="w-full flex flex-col justify-start items-start space-y-2 p-4">
             <Timeline
               items={[
                 ...events.map((call) => ({

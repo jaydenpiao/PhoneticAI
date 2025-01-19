@@ -85,7 +85,7 @@ async def get_all_events():
 
 @app.get("/events/{contact_id}")
 async def get_specific_event(contact_id: int):
-    cursor.execute("select * from calendar_events where calendar_events.contact_id = %s", (contact_id))
+    cursor.execute("select * from calendar_events where calendar_events.contact_id = %s order by start_time, end_time", (contact_id))
     connection.commit()
     return cursor.fetchall()
 
