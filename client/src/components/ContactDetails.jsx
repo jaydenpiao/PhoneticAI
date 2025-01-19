@@ -54,7 +54,7 @@ const CallList = ({ calls, downloadTranscript }) => {
             <div className="flex flex-col space-y-1">
               <div className="flex flex-row space-x-2 justify-start align-middle">
                 <Title level={5} className="mb-0">
-                  #{call.id} : {call.summary || "No summary"}
+                  #{call.id} : {call.summary || "---"}
                 </Title>
                 <Text className="text-xs text-gray-500 pt-1">
                   {new Date(call.timestamp).toLocaleString()} for{" "}
